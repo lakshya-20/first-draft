@@ -1,7 +1,6 @@
 import Head from 'next/head'
-import Image from 'next/image'
+import FloatingButton from '../components/floatingButton'
 import Footer from '../components/footer'
-import styles from '../styles/Home.module.css'
 import HomePage from './homepage'
 
 export default function Home() {    
@@ -12,14 +11,13 @@ export default function Home() {
               <meta name="description" content="A blog site made using Next.js." />
               <link rel="icon" href="/favicon.ico" />
             </Head>
-
             <main className="">
                 <HomePage/>
-            </main>
-
+            </main>                        
             <footer className="">
                 <Footer/>
             </footer>
+            <FloatingButton/>
         </div>
     )
 }
