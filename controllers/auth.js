@@ -25,7 +25,7 @@ export const signup = async (req,res) =>{
         await user.save();
         user = await User.findOne({email:email});
         user.password= undefined;
-        const token = jwt.sign({_id:user._id}, process.env.JWTSecret);
+        const token = jwt.sign({_id:user._id}, process.env.NEXT_PUBLIC_JWTSecret);
         return res.status(200).json({token, user});        
     }catch(err){
         return res.status(500).json({error:"Internal Server Error"});
@@ -48,7 +48,7 @@ export const singin = async(req,res) =>{
             return res.status(500).json({error:"Invalid Credentials"});
         }
         savedUser.password = undefined;
-        const token = jwt.sign({_id: savedUser._id}, process.env.JWTSecret);
+        const token = jwt.sign({_id: savedUser._id}, process.env.NEXT_PUBLIC_JWTSecret);
         return res.status(200).json({token,user:savedUser});
     }catch(err){
         return res.status(500).json({error:"Internal Server Error"});

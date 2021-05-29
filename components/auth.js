@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Button, Modal, ModalBody, ModalFooter,
     TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, 
     Form, FormGroup, Input} from 'reactstrap';
 import classnames from 'classnames';
 import styles  from '../styles/temp.module.css'
-const Temp = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+import { AuthContext } from '../Context/AuthContext';
+import * as AuthActionCreators from '../Context/AuthActionCreater';
+import storageService from '../lib/localStorageHelpers';
+const AuthForm = () => {
+    const {authState, authDispatch} = useContext(AuthContext);
+    const [isModalOpen, setIsModalOpen] = useState(authState.isFormOpen);
     const [activeTab, setActiveTab] = useState('1');
     const [viewSigninPassword,setViewSigninPassword] = useState(false);
     const [viewSignupPassword,setViewSignupPassword] = useState(false);
@@ -17,7 +21,13 @@ const Temp = () => {
         password: "",
         re_password: "",
         name: ""
-    })
+    }) 
+    useEffect(()=>{
+        setIsModalOpen(authState.isFormOpen)
+    },[authState.isFormOpen]) 
+    // useEffect(()=>{
+    //     alert("gbjk2222")
+    // },[isModalOpen])   
     const handleChange = (event) => {
         const { name, value } = event.target;
         setValues({
@@ -43,7 +53,7 @@ const Temp = () => {
         })
     }
     const toggleModal = () => {
-        setIsModalOpen(!isModalOpen);
+        authDispatch(AuthActionCreators.authStateForm())        
         resetValues();
     }
     const toggleTab = tab => {
@@ -61,6 +71,9 @@ const Temp = () => {
              body:data
         })
         resData = await resData.json();
+        // if (typeof window !== 'undefined') {
+        //     alert(JSON.stringify(resData));
+        // } 
         return resData.url;
     }
     const handleSubmit = async () =>{
@@ -71,11 +84,8 @@ const Temp = () => {
         try{
             if(image){
                 values["dp"] = await handleImageSubmit(image);
-                // if (typeof window !== 'undefined') {
-                //     await alert(handleImageSubmit(image));
-                // }
             }
-            fetch(`${process.env.NEXT_PUBLIC_baseURL}/api/auth?action=${action}`,{
+            var resData  = await fetch(`${process.env.NEXT_PUBLIC_baseURL}/api/auth?action=${action}`,{
                 method: "POST",
                 params: {
                     action : "signin"
@@ -86,28 +96,27 @@ const Temp = () => {
                 },
                 body: JSON.stringify(values)
             })
-            .then(res => res.json())
-            .then(data => {
-                if(data.error){
-                    if (typeof window !== 'undefined') {
-                        alert(JSON.stringify(data));
-                    }
-                    return
-                } 
+            resData = await resData.json();
+            if(resData.error){
                 if (typeof window !== 'undefined') {
-                    alert(JSON.stringify(data));
-                }               
-            })
+                    alert(JSON.stringify(resData.error));
+                }
+                return
+            }
+            // if (typeof window !== 'undefined') {
+            //     alert(JSON.stringify(resData));
+            // }
+            await authDispatch(AuthActionCreators.authStateUpdate(resData))
+            toggleModal();
+            await storageService.saveUser(resData);
         }catch(err){
             if (typeof window !== 'undefined') {
                 alert(err);
             }
-        }        
-        toggleModal();
+        }                
     }
     return ( 
         <div>
-            <Button color="danger" onClick={toggleModal}>Modal</Button>
             <Modal isOpen={isModalOpen} toggle={toggleModal} className="modal-dialog-centered">
                 {/* <ModalHeader toggle={toggle}>Modal title</ModalHeader> */}
                 <ModalBody >
@@ -265,4 +274,4 @@ const Temp = () => {
      );
 }
  
-export default Temp;
+export default AuthForm;

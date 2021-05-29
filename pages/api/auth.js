@@ -9,7 +9,7 @@ export default async function handler (req,res) {
             try{
                 
             }catch(err){
-                res.status(500).send(err.message);
+                res.status(500).json({error:"Internal Server Error"});
             }
             break;
         }
@@ -22,7 +22,7 @@ export default async function handler (req,res) {
                     return signup(req,res);
                 }                
             }catch(err){
-                res.status(500).send(err.message);
+                res.status(500).json({error:"Internal Server Error"});
             }
             break;
         }
@@ -30,7 +30,7 @@ export default async function handler (req,res) {
             try{
 
             }catch(err){
-                res.status(500).send(err.message);
+                res.status(500).json({error:"Internal Server Error"});
             }
             break;
         }
@@ -38,12 +38,12 @@ export default async function handler (req,res) {
             try{
 
             }catch(err){
-                res.status(500).send(err.message);
+                res.status(500).json({error:"Internal Server Error"});
             }
             break;
         }
         default:{
-            res.send(400).send("Invalid request");
+            res.status(500).json({error:"Invalid request"});
         }
     }
 }
