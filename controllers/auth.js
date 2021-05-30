@@ -33,6 +33,9 @@ export const signup = async (req,res) =>{
 }
 
 export const singin = async(req,res) =>{
+    if(! await requireAPIKey(req, res)){
+        return res.status(401).json({error: "Access denied"})
+    }
     const {email,password} = req.body;
     const {errors, valid} = signinValidator(email,password);
     if(!valid){

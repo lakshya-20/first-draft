@@ -5,9 +5,7 @@ const HomePage = () =>{
     const {authState} = useContext(AuthContext);
     return (
         <div>
-            <Layout>
-                
-            </Layout>            
+                       
         </div>
     )
 }

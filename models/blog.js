@@ -4,7 +4,7 @@ const slugify = require('slugify')
 const createDomPurify = require('dompurify')
 const { JSDOM } = require('jsdom')
 const dompurify = createDomPurify(new JSDOM().window)
-
+const {ObjectId} = mongoose.Schema.Types;
 const blogSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -23,12 +23,22 @@ const blogSchema = new mongoose.Schema({
     },
     slug: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     sanitizedHtml: {
         type: String,
         required: true
+    },
+    likes:[{
+        type: ObjectId, ref: "User"
+    }],
+    comments:[{
+        type: String,
+        postedBy:{type: ObjectId, ref:"User"}
+    }],
+    postedBy:{
+        type: ObjectId,
+        ref: "User"
     }
 })
 

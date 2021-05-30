@@ -1,26 +1,31 @@
 const jwt = require('jsonwebtoken')
-import {User} from '../models/user';
+import User from '../models/user';
+
+const isValid = (bool) =>{
+    return bool; 
+}
 
 export const requireLogin = async (req,res) =>{
     const {authorization} = req.headers;
     const token = authorization;
     if(!token){
-        return res.status(401).json({error:"Access denied. No token provided"});
+        return isValid(false);
     }
     try{
-        const decoded = jwt.verify(token,process.env.JWTSecret);
+        const decoded = jwt.verify(token,process.env.NEXT_PUBLIC_JWTSecret);
         var user = await  User.findById(decoded._id);
         user.password = undefined;
         req.user = user;
+        return isValid(true);
     }catch(err){
-        res.status(401).json({error:"Access denied. Invalid token"});
+        return isValid(false);
     }
 }
 
 export const requireAPIKey = async (req,res) =>{
-    const {apiKey} = req.headers;
-    if(apiKey!==process.env.apiKey){
-        return res.status(401).json({error:"Access denied"})
+    const {api_key} = req.headers;
+    if(api_key!==process.env.NEXT_PUBLIC_apiKey){
+        return isValid(false);
     }
-    
+    return isValid(true);
 }

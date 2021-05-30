@@ -25,3 +25,20 @@ export const signinValidator = (email, password) =>{
         valid: Object.keys(errors).length < 1
     }
 }
+
+export const newBlogvalidator = (title, description, markdown) =>{
+    const errors = {};
+    if(!title || title.trim() === ''){
+        errors.title = "Title must not be empty";
+    }
+    if(!description || description.trim() === ''){
+        errors.description = "Description must not be empty";
+    }
+    if(!markdown || markdown.trim() === ''){
+        errors.description = "Markdown can not be empty";
+    }
+    return {
+        errors,
+        valid: Object.keys(errors).length < 1
+    }
+}
