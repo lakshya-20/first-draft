@@ -14,7 +14,7 @@ export default async function handler (req, res){
                 if(id){
                     return getBlog(req, res, id);  
                 }
-                else{                    
+                else{      
                     return getAllBlogs(req, res);
                 }
             }catch(err){                 

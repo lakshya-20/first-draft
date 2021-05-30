@@ -91,7 +91,7 @@ const AuthForm = () => {
                     action : "signin"
                 },
                 headers: {
-                    "apiKey": "firstDraftAPIKEY",
+                    "api_key": process.env.NEXT_PUBLIC_apiKey,
                     "Content-Type":"application/json"
                 },
                 body: JSON.stringify(values)

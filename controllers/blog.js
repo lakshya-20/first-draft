@@ -7,7 +7,7 @@ export const getAllBlogs = async (req,res) =>{
         return res.status(401).json({error: "Access denied"})
     }
     try{
-        const blogs = await Blog.find().sort({createdAt:'desc'});
+        const blogs = await Blog.find().sort({createdAt:'desc'}).limit(10);
         return res.status(200).json(blogs);
     }catch(err){
         return res.status(500).json({error:"Internal Server Error"});
@@ -19,7 +19,8 @@ export const getBlog = async (req,res,id) =>{
         return res.status(401).json({error: "Access denied"})
     }
     try{
-        const blog = await Blog.findById(id);
+        const blog = await Blog.findById(id)
+        .populate("postedBy","_id name dp");
         return res.status(200).json(blog);
     }catch(err){
         return res.status(500).json({error:"Internal Server Error"});
