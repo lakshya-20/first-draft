@@ -32,7 +32,7 @@ export default function Home() {
                 <section>
                     <Row>
                         {blogs.map(blog => {
-                            return(<RenderBlogCard blog={blog}/>)
+                            return(<RenderBlogCard blog={blog} key={blog._id}/>)
                         })}
                     </Row>
                 </section>

@@ -11,8 +11,28 @@ const Layout = ({children, home}) => {
     useEffect(()=>{
         setIsFloatingButtonOpen(!authState.isFormOpen);
     },[authState])
+    const renderBackButton = () =>{
+        if(!home) {
+            if (typeof window !== 'undefined') {
+                if(window.history.length > 2){
+                    return(
+                        <div onClick={()=>{router.back()}}>← Back</div>
+                    )
+                }
+                else {
+                    return(
+                        <div onClick={()=>{router.push('/')}}>← Back</div>
+                    )                    
+                }
+            }
+        }
+        else{
+            return(null)
+        }
+    }
     return(
         <div className="m-2">
+            
             <AuthForm/>
             {isFloatingButtonOpen?
                 <FloatingButton/>
@@ -21,12 +41,8 @@ const Layout = ({children, home}) => {
             }
             
             <div className="container">
-                {children}        
-                {!home? 
-                    <div onClick={()=>router.back()}>← Back</div>
-                :
-                    null
-                }
+                {children} 
+                {renderBackButton()}
             </div>
         </div>
     )
