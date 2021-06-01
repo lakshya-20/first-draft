@@ -3,8 +3,8 @@ import Head from 'next/head'
 import { AuthContext } from '../Context/AuthContext';
 import Layout from '../components/layout';
 import {getSortedBlogsData} from '../lib/blog';
-import Link from 'next/link'
-import {Card, CardTitle, CardText, Row, Col} from 'reactstrap';
+import {Row} from 'reactstrap';
+import RenderBlogCard from '../components/RenderBlogCard';
 
 export default function Home() {    
     const {authState} = useContext(AuthContext);
@@ -13,19 +13,6 @@ export default function Home() {
         const blogs = await getSortedBlogsData();
         setBlogs(blogs);
     },[])
-
-    const renderBlog = (blog) =>{
-        return(
-            <Col sm="12" key={blog._id}>
-                <Card body>
-                    <Link href={`/blogs/${blog._id}`}>
-                        <CardTitle tag="h5">{blog.title}</CardTitle>
-                    </Link>
-                    <CardText>{blog.description}</CardText>
-                </Card>
-            </Col>
-        )
-    }
 
     return (
         <div className="">
@@ -45,7 +32,7 @@ export default function Home() {
                 <section>
                     <Row>
                         {blogs.map(blog => {
-                            return(renderBlog(blog))
+                            return(<RenderBlogCard blog={blog}/>)
                         })}
                     </Row>
                 </section>

@@ -18,7 +18,7 @@ export default async function handler (req, res){
                     return getAllBlogs(req, res);
                 }
             }catch(err){                 
-                res.status(500).json({error:err.message});
+                res.status(500).json({error:"Internal Server Error"});
             }
             break;
         }
@@ -26,7 +26,7 @@ export default async function handler (req, res){
             try{     
                 return updateBlog(req, res, id);
             }catch(err){                
-                res.status(500).json({error:err.message});
+                res.status(500).json({error:"Internal Server Error"});
             }
             break;
         }
@@ -34,7 +34,7 @@ export default async function handler (req, res){
             try{                                
                 return addBlog(req,res);
             }catch(err){                
-                res.status(500).json({error:err.message});
+                res.status(500).json({error:"Internal Server Error"});
             }
             break;
         }
@@ -42,12 +42,12 @@ export default async function handler (req, res){
             try{                
                 return deleteBlog(req,res,id);
             }catch(err){
-                res.status(500).json({error:err.message});
+                res.status(500).json({error:"Internal Server Error"});
             }
             break;
         }
         default:{
-            res.send(400).send("Invalid request");
+            res.send(400).json({error: "Bad Request"});
         }
     }
 }

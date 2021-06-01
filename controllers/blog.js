@@ -1,7 +1,7 @@
-import {newBlogvalidator} from '../utils/validators';
+import {newBlogvalidator} from '../utils/dataValidators';
 import {requireAPIKey, requireLogin} from '../utils/requestValidators';
 const Blog = require('../models/blog');
-
+const User = require('../models/user');
 export const getAllBlogs = async (req,res) =>{
     if(! await requireAPIKey(req, res)){
         return res.status(401).json({error: "Access denied"})
@@ -10,7 +10,7 @@ export const getAllBlogs = async (req,res) =>{
         const blogs = await Blog.find().sort({createdAt:'desc'}).limit(10);
         return res.status(200).json(blogs);
     }catch(err){
-        return res.status(500).json({error:"Internal Server Error"});
+        throw err;
     }
 }
 
@@ -23,7 +23,7 @@ export const getBlog = async (req,res,id) =>{
         .populate("postedBy","_id name dp");
         return res.status(200).json(blog);
     }catch(err){
-        return res.status(500).json({error:"Internal Server Error"});
+        throw err;
     }
 }
 
@@ -36,13 +36,23 @@ export const addBlog = async (req,res) =>{
     if(!valid){
         return res.status(401).send({error:Object.values(errors)[0]});
     }
+    const session = await User.startSession();
+    session.startTransaction();
     try{
-        req.body.postedBy = req.user._id;
-        var blog = new Blog(req.body)
-        blog= await blog.save();                
+        const userId = req.user._id;
+        req.body.postedBy = userId;
+        var blog = new Blog(req.body);
+        blog = await blog.save();
+        await User.findByIdAndUpdate(userId,{
+            $push:{blogs:blog._id}
+        });
+        await session.commitTransaction();
+        session.endSession();
         return res.status(200).json(blog);
-    }catch(err){
-        return res.status(500).json({error:"Internal Server Error"});
+    } catch(err){
+        await session.abortTransaction();
+        session.endSession();
+        throw err;
     }
 }
 
@@ -66,7 +76,7 @@ export const updateBlog = async (req, res, id) =>{
         blog = await blog.save();
         return res.status(200).json(blog);
     }catch(err){
-        return res.status(500).json({error:"Internal Server Error"});
+        throw err;
     }
 }
 
@@ -74,10 +84,21 @@ export const deleteBlog = async (req,res,id) =>{
     if(!(await requireAPIKey(req, res)&&await requireLogin(req,res))){
         return res.status(401).json({error: "Access denied"})
     }
+    const session = await User.startSession();
+    session.startTransaction();
     try{
-        await Blog.findByIdAndDelete(id);
+        const userId = req.user._id;
+        const blog = await Blog.findByIdAndDelete(id);
+        await User.findByIdAndUpdate(userId,{
+            $pull:{blogs:blog._id}
+        })
+        await session.commitTransaction();
+        session.endSession();
         return res.status(200).send("Blog Delete Successful");
-    }catch(err){
-        return res.status(500).json({error:"Internal Server Error"});
+    } catch(err) {
+        await session.abortTransaction();
+        session.endSession();
+        throw err;
     }
+
 }

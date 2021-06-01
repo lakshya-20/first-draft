@@ -1,10 +1,12 @@
 const bcrypt = require('bcryptjs');
 const jwt= require('jsonwebtoken');
-import {signupValidator, signinValidator} from '../utils/validators';
+import {signupValidator, signinValidator} from '../utils/dataValidators';
 import {requireAPIKey} from '../utils/requestValidators';
 const User = require('../models/user');
 export const signup = async (req,res) =>{
-    await requireAPIKey(req,res);
+    if(! await requireAPIKey(req, res)){
+        return res.status(401).json({error: "Access denied"})
+    }
     const {email, password, name, dp} = req.body;
     const {errors, valid} = signupValidator(email,password);
     if(!valid){
@@ -28,6 +30,7 @@ export const signup = async (req,res) =>{
         const token = jwt.sign({_id:user._id}, process.env.NEXT_PUBLIC_JWTSecret);
         return res.status(200).json({token, user});        
     }catch(err){
+        console.log(err)
         return res.status(500).json({error:"Internal Server Error"});
     }
 }

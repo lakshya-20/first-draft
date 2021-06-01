@@ -51,6 +51,9 @@ const AuthForm = () => {
             re_password: "",
             name: ""
         })
+        setViewSigninPassword(false);
+        setViewSignupPassword(false);
+        setViewSignupRePassword(false);
     }
     const toggleModal = () => {
         authDispatch(AuthActionCreators.authStateForm())        

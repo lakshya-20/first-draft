@@ -11,3 +11,10 @@ const Profile = () => {
 }
  
 export default Profile;
+
+// export async function getServerSideProps(context){
+//     const {query: {id}} = context;
+//     return {
+//         params: {}
+//     }
+// }

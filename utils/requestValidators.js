@@ -13,7 +13,7 @@ export const requireLogin = async (req,res) =>{
     }
     try{
         const decoded = jwt.verify(token,process.env.NEXT_PUBLIC_JWTSecret);
-        var user = await  User.findById(decoded._id);
+        var user = await  User.findById(decoded._id);        
         user.password = undefined;
         req.user = user;
         return isValid(true);
