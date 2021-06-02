@@ -1,5 +1,4 @@
 import {useContext, useState, useEffect} from 'react';
-import Head from "next/head";
 import FloatingButton from "../components/floatingButton";
 import { AuthContext } from '../Context/AuthContext';
 import AuthForm from "./auth";
@@ -16,12 +15,12 @@ const Layout = ({children, home}) => {
             if (typeof window !== 'undefined') {
                 if(window.history.length > 2){
                     return(
-                        <div onClick={()=>{router.back()}}>← Back</div>
+                        <span onClick={()=>{router.back()}}>← Back</span>
                     )
                 }
                 else {
                     return(
-                        <div onClick={()=>{router.push('/')}}>← Back</div>
+                        <span onClick={()=>{router.push('/')}}>← Back</span>
                     )                    
                 }
             }

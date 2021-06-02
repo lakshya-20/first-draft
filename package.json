@@ -25,6 +25,7 @@
     "reactstrap": "^8.9.0",
     "remark": "^13.0.0",
     "remark-html": "^13.0.1",
-    "slugify": "^1.5.3"
+    "slugify": "^1.5.3",
+    "yamde": "^1.6.1"
   }
 }

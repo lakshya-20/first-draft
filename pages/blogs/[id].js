@@ -15,19 +15,22 @@ const Blog = ({blog}) => {
                     <Image
                         priority
                         src= {blog.postedBy.dp}
-                        height={144}
-                        width={144}
+                        height={100}
+                        width={100}
                         alt={blog.postedBy.name}
                         className="user_dp"
                     />     
                     <Link href={`/profile/${blog.postedBy._id}`}>
-                        <h2>{blog.postedBy.name}</h2>                        
+                        <h4>{blog.postedBy.name}</h4>                        
                     </Link>                                   
                 </header>
                 <article>
                     <h1>{blog.title}</h1>
                     <div>
                         <DateString dateString={blog.createdAt}/>
+                    </div>
+                    <div>
+                        <h5>{blog.description}</h5>
                     </div>                    
                     <div dangerouslySetInnerHTML={{ __html:blog.markdown }} />
                 </article>

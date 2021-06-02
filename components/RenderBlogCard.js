@@ -2,7 +2,7 @@ import {Card, CardTitle, CardText, Row, Col} from 'reactstrap';
 import Link from 'next/link'
 const RenderBlogCard = ({blog}) => {
     return ( 
-        <Col sm="12" key={blog._id}>
+        <Col sm="12" key={blog._id} className="p-2">
             <Card body>
                 <Link href={`/blogs/${blog._id}`}>
                     <CardTitle tag="h5">{blog.title}</CardTitle>

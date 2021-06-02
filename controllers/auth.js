@@ -10,7 +10,7 @@ export const signup = async (req,res) =>{
     const {email, password, name, dp} = req.body;
     const {errors, valid} = signupValidator(email,password);
     if(!valid){
-        return res.status(401).send({error:Object.values(errors)[0]});
+        return res.status(422).send({error:Object.values(errors)[0]});
     }
     try{
         const savedUser = await User.findOne({email:email});
@@ -42,7 +42,7 @@ export const singin = async(req,res) =>{
     const {email,password} = req.body;
     const {errors, valid} = signinValidator(email,password);
     if(!valid){
-        return res.status(401).send({error:Object.values(errors)[0]});
+        return res.status(422).send({error:Object.values(errors)[0]});
     }
     try{
         const savedUser = await User.findOne({email:email});

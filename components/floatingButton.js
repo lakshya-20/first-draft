@@ -21,9 +21,9 @@ const FloatingButton = () => {
             <Fab
                 // mainButtonStyles={mainButtonStyles}
                 // actionButtonStyles={actionButtonStyles}
-                // style={style}
+                style={{ bottom: 5, right: 5 }}
                 icon={<i className="fa fa-plus"></i>}
-                // event={event}
+                event="click"
                 alwaysShowTitle={true}
                 // onClick={someFunctionForTheMainButton}
             >
@@ -37,11 +37,34 @@ const FloatingButton = () => {
             :
                 null
             }
-            <Action data-toggle="tooltip" data-placement="left" title="About"
+            {/* <Action data-toggle="tooltip" data-placement="left" title="About"
                 text="About"
                 // onClick={handleHelpOnClick}
             >
                 <i className="fa fa-info" />
+            </Action> */}
+            {/* {authState.auth.token?
+                <Action data-toggle="tooltip" data-placement="right" title="New"
+                    text="New"
+                    onClick={()=>router.push(`/blogs/new`)}
+                >
+                    <i className="fa fa-plus"></i>
+                </Action>
+            :
+                null
+            } */}
+            <Action data-toggle="tooltip" data-placement="right" title="New"
+                text="New"
+                onClick={()=>{
+                    if(authState.auth.token){
+                        router.push(`/blogs/new`)
+                    }
+                    else{
+                        authDispatch(AuthActionCreators.authStateForm())
+                    }
+                }}
+            >
+                <i className="fa fa-plus"></i>
             </Action>
             {authState.auth.token?
                 <Action data-toggle="tooltip" data-placement="right" title="Profile"
@@ -56,7 +79,11 @@ const FloatingButton = () => {
             {authState.auth.token?
                 <Action data-toggle="tooltip" data-placement="right" title="Signout"
                     text="Signout"
-                    onClick={()=>router.push("/")}
+                    onClick={()=>{
+                        authDispatch(AuthActionCreators.authStateUpdate({}));
+                        storageService.logoutUser();
+                        router.push("/");
+                    }}
                 >
                     <i className="fa fa-sign-out"></i>
                 </Action>

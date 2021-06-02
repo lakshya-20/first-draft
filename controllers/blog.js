@@ -34,7 +34,7 @@ export const addBlog = async (req,res) =>{
     const {title, description, markdown} = req.body;
     const {errors, valid} = newBlogvalidator(title,description,markdown);
     if(!valid){
-        return res.status(401).send({error:Object.values(errors)[0]});
+        return res.status(422).send({error:Object.values(errors)[0]});
     }
     const session = await User.startSession();
     session.startTransaction();
