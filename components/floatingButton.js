@@ -57,7 +57,7 @@ const FloatingButton = () => {
                 text="New"
                 onClick={()=>{
                     if(authState.auth.token){
-                        router.push(`/blogs/new`)
+                        router.push(`/blogs/form?id=new`)
                     }
                     else{
                         authDispatch(AuthActionCreators.authStateForm())

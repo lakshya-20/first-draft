@@ -32,7 +32,7 @@ const Profile = ({profile}) => {
                 <section>
                     <Row>
                         {profile.blogs.map(blog => {
-                            return(<RenderBlogCard blog={blog} key={blog._id}/>)
+                            return(<RenderBlogCard blog={blog} key={blog._id} profile/>)
                         })}
                     </Row>
                 </section>

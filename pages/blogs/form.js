@@ -7,10 +7,11 @@ import Head from "next/head";
 import Image from 'next/image'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import Yamde from "yamde";
-const NewBlog = () => {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [markdown, setMarkdown] = useState("Type Markdown");
+import {getBlogData} from '../../lib/blog';
+const NewBlog = ({blog}) => {
+    const [title, setTitle] = useState(blog?blog.title:"");
+    const [description, setDescription] = useState(blog?blog.description:"");
+    const [markdown, setMarkdown] = useState(blog?blog.markdown:"Type Markdown");
     const [isLightMode, setIsLightMode] = useState(true);
     const {authState} = useContext(AuthContext);
     const router = useRouter();
@@ -19,7 +20,7 @@ const NewBlog = () => {
             router.replace('/');
         }
     },[])
-    const handleSubmit = async () =>{
+    const handleSubmit = async (update) =>{
         if(!(title&&description&&markdown)){
             console.log("All fields are required");
             return;
@@ -30,21 +31,34 @@ const NewBlog = () => {
             markdown
         }
         try{
-            const response = await fetch(`${process.env.NEXT_PUBLIC_baseURL}/api/blogs`,{
-                method: "POST",
-                headers:{
-                    "Content-Type":"application/json",
-                    api_key: process.env.NEXT_PUBLIC_apiKey,
-                    authorization: authState.auth.token
-                },
-                body: JSON.stringify(blogData)
-            });
+            var response=""
+            {update?
+                response = await fetch(`${process.env.NEXT_PUBLIC_baseURL}/api/blogs?id=${blog._id}`,{
+                    method: "PUT",
+                    headers:{
+                        "Content-Type":"application/json",
+                        api_key: process.env.NEXT_PUBLIC_apiKey,
+                        authorization: authState.auth.token
+                    },
+                    body: JSON.stringify(blogData)
+                })
+            :
+                response = await fetch(`${process.env.NEXT_PUBLIC_baseURL}/api/blogs`,{
+                    method: "POST",
+                    headers:{
+                        "Content-Type":"application/json",
+                        api_key: process.env.NEXT_PUBLIC_apiKey,
+                        authorization: authState.auth.token
+                    },
+                    body: JSON.stringify(blogData)
+                })
+            }
             blogData = await response.json();
             if(blogData.error){
                 console.log(blogData.error)
                 return;
             }
-            console.log("Blog uploaded");
+            console.log("Operation Successful");
             router.replace(`/blogs/${blogData._id}`)
         } catch(err){
             console.log(err.message);
@@ -54,7 +68,11 @@ const NewBlog = () => {
         <div>
             <Layout>
                 <Head>
-                    <title>Add Blog</title>
+                    {blog?
+                        <title>Update Blog</title>
+                    :
+                        <title>Add New</title>
+                    }
                 </Head>
                 <header className="text-center">
                     {authState.auth.user?
@@ -74,7 +92,11 @@ const NewBlog = () => {
                     }
                 </header>
                 <section>
-                    <h3>Add a blog</h3>
+                    {blog?
+                        <h3>Update Blog</h3>
+                    :
+                        <h3>Add New</h3>
+                    }
                 </section>
                 <section>
                     <Form>
@@ -98,8 +120,8 @@ const NewBlog = () => {
                         />
                     </Form>
                     <div className="d-flex justify-content-around align-items-center">
-                        <Button className="btn btn-success" onClick={()=>handleSubmit()}>Submit</Button>
-                        <Button onClick={()=>router.push('/')}>Cancel</Button>
+                        <Button className="btn btn-success" onClick={()=>handleSubmit(blog? true :false)}>Submit</Button>
+                        <Button onClick={()=>router.back()}>Cancel</Button>
                     </div>
                     <br/>
                 </section>
@@ -109,3 +131,12 @@ const NewBlog = () => {
 }
  
 export default NewBlog;
+
+export async function getServerSideProps(context) {
+    const {query: {id}} = context
+    if(id=="new"){
+        return {props: {blog:null}}
+    }
+    const blog = await getBlogData(id);
+    return {props: {blog}}
+}

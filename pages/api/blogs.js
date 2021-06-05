@@ -38,6 +38,7 @@ export default async function handler (req, res){
             try{                
                 return deleteBlog(req,res,id);
             }catch(err){
+                console.log(err)
                 res.status(500).json({error:"Internal Server Error"});
             }
             break;

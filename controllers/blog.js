@@ -7,7 +7,7 @@ export const getAllBlogs = async (req,res) =>{
         return res.status(401).json({error: "Access denied"})
     }
     try{
-        const blogs = await Blog.find().sort({createdAt:'desc'}).limit(10);
+        const blogs = await Blog.find().sort({createdAt:'desc'}).limit(10).populate("postedBy","_id name dp");;
         return res.status(200).json(blogs);
     }catch(err){
         throw err;
@@ -94,7 +94,7 @@ export const deleteBlog = async (req,res,id) =>{
         })
         await session.commitTransaction();
         session.endSession();
-        return res.status(200).send("Blog Delete Successful");
+        return res.status(200).json({message:"Blog Delete Successful"});
     } catch(err) {
         await session.abortTransaction();
         session.endSession();
