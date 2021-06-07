@@ -3,7 +3,7 @@ import { Button, Modal, ModalBody, ModalFooter,
     TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, 
     Form, FormGroup, Input} from 'reactstrap';
 import classnames from 'classnames';
-import styles  from '../styles/temp.module.css'
+import styles  from '../styles/auth.module.css'
 import { AuthContext } from '../Context/AuthContext';
 import * as AuthActionCreators from '../Context/AuthActionCreater';
 import storageService from '../lib/localStorageHelpers';

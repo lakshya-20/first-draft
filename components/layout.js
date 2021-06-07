@@ -30,7 +30,7 @@ const Layout = ({children, home}) => {
         }
     }
     return(
-        <div className="m-2">
+        <div>
             
             <AuthForm/>
             {isFloatingButtonOpen?
@@ -39,10 +39,16 @@ const Layout = ({children, home}) => {
                 ""
             }
             
-            <div className="container">
-                {children} 
-                {renderBackButton()}
-            </div>
+            {home?
+                <div>
+                    {children}
+                </div>
+            :
+                <div className="container">
+                    {children} 
+                    {renderBackButton()}
+                </div>
+            }
         </div>
     )
 }

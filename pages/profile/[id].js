@@ -1,6 +1,6 @@
 import Layout from "../../components/layout"
 import Head from 'next/head';
-import Image from 'next/image'
+import Image from 'next/image';
 import {getProfileData} from '../../lib/profile';
 import RenderBlogCard from '../../components/RenderBlogCard';
 import {Row} from 'reactstrap';

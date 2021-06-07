@@ -5,31 +5,45 @@ import Layout from '../components/layout';
 import {getSortedBlogsData} from '../lib/blog';
 import {Row} from 'reactstrap';
 import RenderBlogCard from '../components/RenderBlogCard';
-
+import * as AuthActionCreators from '../Context/AuthActionCreater';
+import styles from '../styles/index.module.css';
 export default function Home() {    
-    const {authState} = useContext(AuthContext);
+    const {authState, authDispatch} = useContext(AuthContext);
     const [blogs,setBlogs] = useState([]);
     useEffect( async ()=>{
         const blogs = await getSortedBlogsData();
         setBlogs(blogs);
     },[])
-
+    const head1 = "Sustainability";
+    const head2 = 'Starts With You';
     return (
-        <div className="">
+        <div className="index">
             <Layout home>
                 <Head>
                     <title>First Draft</title>
                 </Head>
-                <section>
-                    {authState.auth.token?
-                        <div>
-                            Welcome {authState.auth.user.name}
+                <section className={`${styles.top_wrapper}`}>
+                    <div className="px-3 py-3">
+                        <div className={`${styles.nav_wrapper} d-flex justify-content-between align-items-center`}>
+                            <span class={styles.title}>FIRST DRAFT</span>
+                            {authState.auth.token?
+                                <span id={styles.get_started_btn}>Welcome {authState.auth.user.name}</span>
+                            :
+                                <span className={styles.btn_cover}>
+                                    <button id={styles.get_started_btn}
+                                        onClick={()=>authDispatch(AuthActionCreators.authStateForm())}
+                                    >GET STARTED</button>
+                                </span>
+                            }
                         </div>
-                    :
-                        ""
-                    }
+                        <div className={styles.content_wrapper}>
+                            <span className={styles.heading1}>{head1}</span>
+                            <br/>
+                            <span className={styles.heading2}>{head2}</span>
+                        </div>
+                    </div>
                 </section>
-                <section>
+                <section className="container">
                     <Row>
                         {blogs.map(blog => {
                             return(<RenderBlogCard blog={blog} key={blog._id}/>)
