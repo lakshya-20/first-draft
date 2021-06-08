@@ -25,7 +25,7 @@ export default function Home() {
                 <section className={`${styles.top_wrapper}`}>
                     <div className="px-3 py-3">
                         <div className={`${styles.nav_wrapper} d-flex justify-content-between align-items-center`}>
-                            <span class={styles.title}>FIRST DRAFT</span>
+                            <span className={styles.title}>FIRST DRAFT</span>
                             {authState.auth.token?
                                 <span id={styles.get_started_btn}>Welcome {authState.auth.user.name}</span>
                             :

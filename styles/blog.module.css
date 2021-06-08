@@ -1,0 +1,27 @@
+.author_card {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.author_name {
+    font-size: large;
+}
+.author_name_link {
+    cursor: pointer;
+}
+.author_about {
+    font-size: medium;
+    color: #666666;
+}
+.author_connect {
+    font-size: medium;
+
+}
+.author_viewmore {
+    text-align: center;
+    
+}
+.author_viewmore_btn {
+    border: none;
+    background-color: inherit;
+    font-size: small;
+    cursor: pointer;
+}

@@ -73,6 +73,7 @@ export const updateBlog = async (req, res, id) =>{
         blog.title = req.body.title;
         blog.description = req.body.description;
         blog.markdown = req.body.markdown;
+        blog.img_header = req.body.img_header;
         blog = await blog.save();
         return res.status(200).json(blog);
     }catch(err){

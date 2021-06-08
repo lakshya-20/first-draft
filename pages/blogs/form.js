@@ -8,10 +8,14 @@ import Image from 'next/image'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import Yamde from "yamde";
 import {getBlogData} from '../../lib/blog';
+import styles from '../../styles/form.module.css';
 const NewBlog = ({blog}) => {
     const [title, setTitle] = useState(blog?blog.title:"");
     const [description, setDescription] = useState(blog?blog.description:"");
-    const [markdown, setMarkdown] = useState(blog?blog.markdown:"Type Markdown");
+    const [markdown, setMarkdown] = useState(blog?blog.markdown:null);
+    const [image, setImage] = useState();
+    const [imageURL, setImageURL] = useState(blog?blog.img_header:null)
+    const [imagePreview, setImagePreview] = useState();
     const [isLightMode, setIsLightMode] = useState(true);
     const {authState} = useContext(AuthContext);
     const router = useRouter();
@@ -20,18 +24,43 @@ const NewBlog = ({blog}) => {
             router.replace('/');
         }
     },[])
+    const handleImageChange = (file) => {
+        setImage(file);
+        var preview = URL.createObjectURL(file)
+        setImagePreview(preview);
+    }
+    const handleImageSubmit = async (file) => {
+        const data = new FormData();
+        data.append("file",file)
+        data.append('upload_preset',"First Draft");
+        data.append("cloud_name",process.env.NEXT_PUBLIC_cloudinaryCloudName)
+        var resData = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_cloudinaryCloudName}/image/upload`,{
+             method:"post",
+             body:data
+        })
+        resData = await resData.json();
+        return resData.url;
+    }
     const handleSubmit = async (update) =>{
         if(!(title&&description&&markdown)){
             console.log("All fields are required");
             return;
         }
-        var blogData={
-            title,
-            description,
-            markdown
-        }
+        
         try{
-            var response=""
+            var response="";
+            var img_header=imageURL;
+            if(image){
+                var url = await handleImageSubmit(image);
+                img_header=url;
+            }
+            var blogData={
+                title,
+                description,
+                markdown,
+                img_header
+            }
+            console.log(blogData)
             {update?
                 response = await fetch(`${process.env.NEXT_PUBLIC_baseURL}/api/blogs?id=${blog._id}`,{
                     method: "PUT",
@@ -103,6 +132,24 @@ const NewBlog = ({blog}) => {
                         <Input type="text" name="title" placeholder="Blog Title" value={title} onChange={e=>setTitle(e.target.value)}/>
                         <br/>
                         <Input type="textarea" name="description" placeholder="Blog Description" value={description} onChange={(e)=>setDescription(e.target.value)}/>
+                        <br/>
+                        <input type="file" id="image_input" hidden onChange={(e)=>handleImageChange(e.target.files[0])}/>
+                        <div className="text-center">
+                            <label htmlFor="image_input">
+                                <span>
+                                    {(imagePreview||imageURL)?
+                                        <div>
+                                            <h6>Image Header</h6>
+                                            <img src={imagePreview?imagePreview:imageURL} className={styles.image_input}/>
+                                        </div>                                        
+                                    :
+                                        <div className={styles.image_input_btn}>
+                                            Choose Image Header
+                                        </div>
+                                    }                                                
+                                </span>
+                            </label>
+                        </div>
                         {/* <div
                             style={{
                             color: "blue",
@@ -113,6 +160,8 @@ const NewBlog = ({blog}) => {
                         >
                             {`${isLightMode ? "Dark" : "Light"} Mode`}
                         </div> */}
+                        <br/>
+                        <h6>Type Markdown</h6>
                         <Yamde                        
                             value={markdown}
                             handler={setMarkdown}

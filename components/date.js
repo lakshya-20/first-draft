@@ -5,8 +5,13 @@ const DateString = ({dateString}) => {
     var date = now.getDate();
     now = new Date(year+"/"+month+"/"+date)
     now = now.toDateString();
+    const style = {
+        color : "#666666",
+        fontFamily : "Cursive",
+        fontSize : "small"
+    }
     return ( 
-        <div>            
+        <div style={style}>            
             {now}            
         </div>
      );
