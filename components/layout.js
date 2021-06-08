@@ -15,12 +15,12 @@ const Layout = ({children, home}) => {
             if (typeof window !== 'undefined') {
                 if(window.history.length > 2){
                     return(
-                        <span onClick={()=>{router.back()}}>← Back</span>
+                        <span onClick={()=>{router.back()}} type="button">← Back</span>
                     )
                 }
                 else {
                     return(
-                        <span onClick={()=>{router.push('/')}}>← Back</span>
+                        <span onClick={()=>{router.push('/')}} type="button">← Back</span>
                     )                    
                 }
             }

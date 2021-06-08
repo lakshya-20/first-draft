@@ -1,0 +1,21 @@
+.card_subtitle{
+    cursor: pointer;
+    text-decoration: none;
+    font-size: medium;
+    font-family: "Cursive";
+}
+.card_subtitle:hover {
+    text-decoration: underline;
+}
+.readmore_btn {
+    background-color: dimgrey;
+    border-radius: 20px;
+    color: floralwhite;
+    padding: 0px 5px;
+    font-size: small;
+    text-align: center;
+    cursor: pointer;
+}
+.readmore_btn:hover {
+    font-weight: 600;
+}

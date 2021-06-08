@@ -60,7 +60,6 @@ const NewBlog = ({blog}) => {
                 markdown,
                 img_header
             }
-            console.log(blogData)
             {update?
                 response = await fetch(`${process.env.NEXT_PUBLIC_baseURL}/api/blogs?id=${blog._id}`,{
                     method: "PUT",

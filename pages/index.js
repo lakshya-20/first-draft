@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { AuthContext } from '../Context/AuthContext';
 import Layout from '../components/layout';
 import {getSortedBlogsData} from '../lib/blog';
-import {Row} from 'reactstrap';
+import {Row, CardColumns} from 'reactstrap';
 import RenderBlogCard from '../components/RenderBlogCard';
 import * as AuthActionCreators from '../Context/AuthActionCreater';
 import styles from '../styles/index.module.css';
@@ -44,6 +44,7 @@ export default function Home() {
                     </div>
                 </section>
                 <section className="container">
+                    <h4>Recent Stories</h4>
                     <Row>
                         {blogs.map(blog => {
                             return(<RenderBlogCard blog={blog} key={blog._id}/>)

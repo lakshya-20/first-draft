@@ -20,14 +20,17 @@ const Blog = ({blog}) => {
                         <div className="text-center">
                             <h3>{blog.title}</h3>
                             <br/>
-                            {/******************TODO*******************/}
-                            <Image
-                                src={blog.img_header}
-                                alt="Blog Image Header"
-                                width={500}
-                                height={300}
-                                layout="intrinsic"
-                            />
+                            {blog.img_header?
+                                <Image
+                                    src={blog.img_header}
+                                    alt="Blog Image Header"
+                                    width={500}
+                                    height={300}
+                                    layout="intrinsic"
+                                />
+                            :
+                                null
+                            }
                         </div>
                         <div>
                             <h6>{blog.description}</h6>

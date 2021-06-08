@@ -8,7 +8,7 @@ export const getProfile = async (req,res,id) =>{
     }
     try{
         const user = await User.findById(id,{password:0, email:0})
-        .populate("blogs","_id title description createdAt");
+        .populate("blogs","_id title description createdAt img_header");
         return res.status(200).json(user);
     } catch(err){
         res.status(500).json({error: "Internal Server Error"});
