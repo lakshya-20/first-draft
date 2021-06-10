@@ -66,7 +66,6 @@ const RenderBlogCard = ({blog,profile}) => {
                             <Link href={`/blogs/${blog._id}`}>
                                 <span className={styles.readmore_btn}>Read More</span>
                             </Link>
-
                         </p>
                     </div>
                     {(profile&&authState.auth.token)?

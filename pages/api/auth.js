@@ -1,5 +1,5 @@
 const mongoConenction = require('../../utils/mongoConnection');
-import {signup, singin} from '../../controllers/auth';
+import {signup, singin, updateUser} from '../../controllers/auth';
 
 export default async function handler (req,res) {
     const {query: {action}, method} = req;
@@ -28,7 +28,7 @@ export default async function handler (req,res) {
         }
         case "PUT": {
             try{
-
+                return updateUser(req, res);
             }catch(err){
                 res.status(500).json({error:"Internal Server Error"});
             }

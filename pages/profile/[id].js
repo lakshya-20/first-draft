@@ -40,7 +40,6 @@ const Profile = ({profile}) => {
         </div>
      );
 }
- 
 export default Profile;
 
 export async function getServerSideProps(context){

@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt= require('jsonwebtoken');
 import {signupValidator, signinValidator} from '../utils/dataValidators';
-import {requireAPIKey} from '../utils/requestValidators';
+import {requireAPIKey, requireLogin} from '../utils/requestValidators';
 const User = require('../models/user');
 export const signup = async (req,res) =>{
     if(! await requireAPIKey(req, res)){
@@ -57,6 +57,24 @@ export const singin = async(req,res) =>{
         const token = jwt.sign({_id: savedUser._id}, process.env.NEXT_PUBLIC_JWTSecret);
         return res.status(200).json({token,user:savedUser});
     }catch(err){
+        return res.status(500).json({error:"Internal Server Error"});
+    }
+}
+
+export const updateUser = async (req, res) => {
+    if(!(await requireAPIKey(req, res)&&await requireLogin(req,res))){
+        return res.status(401).json({error: "Access denied"})
+    }
+    try{
+        const userId = req.user._id;
+        var user = await User.findById(userId);
+        user.about = req.body.about;
+        user.socialLinks = req.body.socialLinks;
+        user = await user.save();
+        const {authorization} = req.headers;
+        const token = authorization;
+        return res.status(200).json({token,user:user});
+    } catch(err){
         return res.status(500).json({error:"Internal Server Error"});
     }
 }

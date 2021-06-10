@@ -10,3 +10,6 @@ body {
 .user_dp {
     border-radius: 9999px;
 }
+.required_symbol {
+  color: red;
+}

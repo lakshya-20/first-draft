@@ -51,20 +51,42 @@ const Blog = ({blog}) => {
                                 <b className={styles.author_name_link}>{" "+blog.postedBy.name}</b>
                             </Link>       
                         </div>         
-                        <div className={styles.author_about}>Lakshya is a computer whisperer</div>
+                        <div className={styles.author_about}>{blog.postedBy.about}</div>
                         <div className={`${styles.author_connect} d-flex justify-content-around`}>
-                            <a href="#" target="_blank" className="text-secondary">
-                                <i className="fa fa-medium"></i>
-                            </a>
-                            <a href="#" target="_blank" className="text-secondary">
-                                <i className="fa fa-instagram"></i>
-                            </a>
-                            <a href="#" target="_blank" className="text-secondary">
-                                <span className="fa fa-github fa-lg"></span>
-                            </a>
-                            <a href="#" target="_blank" className="text-secondary">
-                                <span className="fa fa-linkedin fa-lg"></span>
-                            </a>                      
+                            {blog.postedBy.socialLinks?
+                                <>
+                                    {blog.postedBy.socialLinks.medium?
+                                        <a href={blog.postedBy.socialLinks.medium} target="_blank" className="text-secondary">
+                                            <i className="fa fa-medium"></i>
+                                        </a>        
+                                    :
+                                        null
+                                    }
+                                    {blog.postedBy.socialLinks.instagram?
+                                        <a href={blog.postedBy.socialLinks.instagram} target="_blank" className="text-secondary">
+                                            <i className="fa fa-instagram"></i>
+                                        </a>        
+                                    :
+                                        null
+                                    }
+                                    {blog.postedBy.socialLinks.github?
+                                        <a href={blog.postedBy.socialLinks.github} target="_blank" className="text-secondary">
+                                            <span className="fa fa-github fa-lg"></span>
+                                        </a>        
+                                    :
+                                        null
+                                    }
+                                    {blog.postedBy.socialLinks.linkedin?
+                                        <a href={blog.postedBy.socialLinks.linkedin} target="_blank" className="text-secondary">
+                                            <span className="fa fa-linkedin fa-lg"></span>
+                                        </a>        
+                                    :
+                                        null
+                                    }
+                                </>
+                            :
+                                null
+                            } 
                         </div>
                         <div className={styles.author_viewmore}>
                             <Link href={`/profile/${blog.postedBy._id}`}>

@@ -20,7 +20,7 @@ export const getBlog = async (req,res,id) =>{
     }
     try{
         const blog = await Blog.findById(id)
-        .populate("postedBy","_id name dp");
+        .populate("postedBy","_id name dp about socialLinks");
         return res.status(200).json(blog);
     }catch(err){
         throw err;

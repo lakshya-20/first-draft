@@ -1,15 +1,19 @@
 import {useEffect, useContext, useState} from 'react'
 import Layout from "../../components/layout"
-import { AuthContext } from '../../Context/AuthContext';
 import { useRouter } from 'next/router';
 import {Link} from 'next/link';
 import Head from "next/head";
 import Image from 'next/image'
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, FormText,
+    Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import Yamde from "yamde";
 import {getBlogData} from '../../lib/blog';
 import styles from '../../styles/form.module.css';
+import storageService from "../../lib/localStorageHelpers";
+import { AuthContext } from '../../Context/AuthContext';
+import * as AuthActionCreators from '../../Context/AuthActionCreater';
 const NewBlog = ({blog}) => {
+    const {authState, authDispatch} = useContext(AuthContext);
     const [title, setTitle] = useState(blog?blog.title:"");
     const [description, setDescription] = useState(blog?blog.description:"");
     const [markdown, setMarkdown] = useState(blog?blog.markdown:null);
@@ -17,13 +21,61 @@ const NewBlog = ({blog}) => {
     const [imageURL, setImageURL] = useState(blog?blog.img_header:null)
     const [imagePreview, setImagePreview] = useState();
     const [isLightMode, setIsLightMode] = useState(true);
-    const {authState} = useContext(AuthContext);
+    const [isProfileModalOpen, setIsProfileModalopen] = useState(false);
     const router = useRouter();
+    const [about, setAbout] = useState(undefined);
+    const [socialLinks, setSocialLinks] = useState({});
     useEffect(()=>{
-        if(!authState.auth.token){
-            router.replace('/');
+        // if(!authState.auth.token){
+        //     router.replace('/');
+        // }
+        const savedUser = storageService.loadUser();
+        if(!savedUser){
+            router.push("/");
         }
-    },[])
+        else if(!savedUser.user.completeProfile){
+            setIsProfileModalopen(true);
+        }
+    },[]);
+
+    const toggleProfileModal = () =>{
+        setIsProfileModalopen(!isProfileModalOpen);
+    }
+    const handleSocialLinkChange = (e) =>{
+        const {name, value} = e.target;
+        setSocialLinks({
+            ...socialLinks,
+            [name]: value
+        })
+    }
+    const handleProfileChange = async () =>{
+        try{
+            const data={
+                about,
+                socialLinks
+            }
+            var response = await fetch(`${process.env.NEXT_PUBLIC_baseURL}/api/auth`,{
+                method: "PUT",
+                headers:{
+                    "Content-Type":"application/json",
+                    api_key: process.env.NEXT_PUBLIC_apiKey,
+                    authorization: authState.auth.token
+                },
+                body: JSON.stringify(data)
+            })
+            response = await response.json();
+            if(response.error){
+                console.log(response.error)
+                router.push('/');
+            }
+            await authDispatch(AuthActionCreators.authStateUpdate(response))
+            await storageService.saveUser(response);
+            window.location.reload();
+        } catch(err){
+            console.log(err);
+            router.push('/');
+        }
+    }
     const handleImageChange = (file) => {
         setImage(file);
         var preview = URL.createObjectURL(file)
@@ -172,6 +224,51 @@ const NewBlog = ({blog}) => {
                         <Button onClick={()=>router.back()}>Cancel</Button>
                     </div>
                     <br/>
+                </section>
+                <section>
+                <Modal isOpen={isProfileModalOpen} toggle={toggleProfileModal} className="modal-dialog-centered">
+                    <ModalHeader >Complete Your Profile</ModalHeader>
+                    <ModalBody>
+                        <Form>
+                        <FormGroup>
+                            <Label for="about">About <span className="required_symbol">*</span></Label>
+                            <Input type="textarea" name="about" id="about" 
+                                placeholder="A line that describes you" maxLength="150"
+                                onChange={(e)=>setAbout(e.target.value)}
+                            />
+                        </FormGroup>                        
+                        <FormGroup> 
+                            <Label for="about">Social Links</Label>
+                            <div className="d-flex align-items-center">
+                                <i className="fa fa-medium px-2"></i>
+                                <Input type="url" name="medium" placeholder="Your Medium Profile"
+                                    onChange={(e)=>handleSocialLinkChange(e)}
+                                />
+                                <br/>
+                                <i className="fa fa-instagram px-2"></i>
+                                <Input type="url" name="instagram" placeholder="Your Instagram Profile"
+                                    onChange={(e)=>handleSocialLinkChange(e)}
+                                />
+                            </div>
+                            <div className="d-flex align-items-center py-2">
+                                <i className="fa fa-github px-2"></i>
+                                <Input type="url" name="github" placeholder="Your Github Profile"
+                                    onChange={(e)=>handleSocialLinkChange(e)}
+                                />
+                                <br/>
+                                <i className="fa fa-linkedin px-2"></i>
+                                <Input type="url" name="linkedin" placeholder="Your Linkedin Profile"
+                                    onChange={(e)=>handleSocialLinkChange(e)}
+                                />
+                            </div>
+                        </FormGroup>
+                        </Form>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" onClick={()=>handleProfileChange()}>Submit</Button>{' '}
+                        <Button color="secondary" onClick={()=>router.push('/')}>Cancel</Button>
+                    </ModalFooter>
+                </Modal>
                 </section>
             </Layout>
         </div>
