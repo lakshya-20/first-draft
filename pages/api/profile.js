@@ -1,7 +1,7 @@
+import {getProfile, updateProfile, deleteProfile} from '@/controllers/profile';
 const mongoose = require('mongoose');
-const User = require('../../models/user');
-const mongoConnection = require ('../../utils/mongoConnection');
-import {getProfile, updateProfile, deleteProfile} from '../../controllers/profile';
+const User = require('@/models/user');
+const mongoConnection = require ('@/utils/mongoConnection');
 export default async function handler (req,res){
     const {query: {id}, method} = req;
     mongoConnection();

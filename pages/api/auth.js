@@ -1,5 +1,5 @@
-const mongoConenction = require('../../utils/mongoConnection');
-import {signup, singin, updateUser} from '../../controllers/auth';
+const mongoConenction = require('@/utils/mongoConnection');
+import {signup, singin, updateUser} from '@/controllers/auth';
 
 export default async function handler (req,res) {
     const {query: {action}, method} = req;

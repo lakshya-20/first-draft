@@ -1,10 +1,10 @@
-import Layout from "../../components/layout";
+import Layout from "@/components/Layout";
+import DateString from "@/components/Date";
 import Head from 'next/head';
 import Image from 'next/image'
 import Link from 'next/link';
-import {getBlogData} from '../../lib/blog';
-import DateString from "../../components/date";
-import styles from '../../styles/blog.module.css'
+import {getBlogData} from '@/lib/blog';
+import styles from '@/styles/blog.module.css'
 const Blog = ({blog}) => {
     return ( 
         <div>
@@ -43,7 +43,6 @@ const Blog = ({blog}) => {
                     <div dangerouslySetInnerHTML={{ __html:blog.markdown }} />
                 </article>        
                 <hr/>        
-                {/*****************************TODO*********************/}
                 <div className={`d-flex justify-content-center ${styles.author_card}`}>
                     <div>
                         <div className={styles.author_name}>Author 

@@ -16,5 +16,3 @@ export const AuthContextProvider = (props) => {
     );
 }
 export default AuthContextProvider;
-// const AuthContextConsumer = AuthContext.Consumer;
-// export default AuthContextConsumer;

@@ -1,12 +1,12 @@
 import {useContext, useState, useEffect} from 'react';
 import Head from 'next/head'
-import { AuthContext } from '../Context/AuthContext';
-import Layout from '../components/layout';
-import {getSortedBlogsData} from '../lib/blog';
-import {Row, CardColumns} from 'reactstrap';
-import RenderBlogCard from '../components/RenderBlogCard';
-import * as AuthActionCreators from '../Context/AuthActionCreater';
-import styles from '../styles/index.module.css';
+import { AuthContext } from '@/Context/AuthContext';
+import Layout from '@/components/Layout';
+import {getSortedBlogsData} from '@/lib/blog';
+import {Row} from 'reactstrap';
+import RenderBlogCard from '@/components/RenderBlogCard';
+import * as AuthActionCreators from '@/Context/AuthActionCreater';
+import styles from '/styles/index.module.css';
 export default function Home() {    
     const {authState, authDispatch} = useContext(AuthContext);
     const [blogs,setBlogs] = useState([]);

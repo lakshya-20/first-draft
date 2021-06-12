@@ -1,5 +1,5 @@
-const mongoConenction = require('../../utils/mongoConnection');
-import {getAllBlogs, getBlog, addBlog, updateBlog, deleteBlog} from '../../controllers/blog';
+const mongoConenction = require('@/utils/mongoConnection');
+import {getAllBlogs, getBlog, addBlog, updateBlog, deleteBlog} from '@/controllers/blog';
 
 export default async function handler (req, res){
     const {query: {id}, method} = req

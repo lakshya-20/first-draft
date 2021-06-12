@@ -1,7 +1,7 @@
 import {useContext, useState, useEffect} from 'react';
-import FloatingButton from "../components/floatingButton";
-import { AuthContext } from '../Context/AuthContext';
-import AuthForm from "./auth";
+import FloatingButton from "@/components/FloatingButton";
+import { AuthContext } from '@/Context/AuthContext';
+import AuthForm from "@/components/Auth";
 import { useRouter } from 'next/router'
 const Layout = ({children, home}) => {
     const {authState} = useContext(AuthContext);

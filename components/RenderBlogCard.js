@@ -1,11 +1,10 @@
 import {useContext} from 'react';
-import {Card, CardImg, CardText, CardBody,
-    CardTitle, CardSubtitle, Button,Row, Col} from 'reactstrap';
+import {Col} from 'reactstrap';
 import Link from 'next/link'
-import DateString from './date';
-import { AuthContext } from '../Context/AuthContext';
+import DateString from '@/components/Date';
+import { AuthContext } from '@/Context/AuthContext';
 import Image from 'next/image';
-import styles from '../styles/renderBlogCard.module.css';
+import styles from '@/styles/renderBlogCard.module.css';
 const RenderBlogCard = ({blog,profile}) => {
     const {authState} = useContext(AuthContext);
     const deleteCard = async (id) =>{

@@ -1,9 +1,9 @@
 import {useContext, useEffect} from 'react';
 import { Fab, Action } from 'react-tiny-fab';
 import 'react-tiny-fab/dist/styles.css';
-import { AuthContext } from '../Context/AuthContext';
-import * as AuthActionCreators from '../Context/AuthActionCreater';
-import storageService from '../lib/localStorageHelpers';
+import { AuthContext } from '@/Context/AuthContext';
+import * as AuthActionCreators from '@/Context/AuthActionCreater';
+import storageService from '@/lib/localStorageHelpers';
 import { useRouter } from "next/router";
 const FloatingButton = () => {
     const {authState, authDispatch} = useContext(AuthContext);

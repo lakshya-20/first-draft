@@ -1,6 +1,6 @@
-import {requireAPIKey, requireLogin} from '../utils/requestValidators';
-const User = require("../models/user");
-const Blog = require("../models/blog");
+import {requireAPIKey, requireLogin} from '@/utils/requestValidators';
+const User = require("@/models/user");
+const Blog = require("@/models/blog");
 
 export const getProfile = async (req,res,id) =>{
     if(! await requireAPIKey(req, res)){

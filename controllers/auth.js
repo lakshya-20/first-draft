@@ -1,8 +1,8 @@
+import {signupValidator, signinValidator} from '@/utils/dataValidators';
+import {requireAPIKey, requireLogin} from '@/utils/requestValidators';
 const bcrypt = require('bcryptjs');
 const jwt= require('jsonwebtoken');
-import {signupValidator, signinValidator} from '../utils/dataValidators';
-import {requireAPIKey, requireLogin} from '../utils/requestValidators';
-const User = require('../models/user');
+const User = require('@/models/user');
 export const signup = async (req,res) =>{
     if(! await requireAPIKey(req, res)){
         return res.status(401).json({error: "Access denied"})

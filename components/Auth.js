@@ -3,10 +3,10 @@ import { Button, Modal, ModalBody, ModalFooter,
     TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, 
     Form, FormGroup, Input} from 'reactstrap';
 import classnames from 'classnames';
-import styles  from '../styles/auth.module.css'
-import { AuthContext } from '../Context/AuthContext';
-import * as AuthActionCreators from '../Context/AuthActionCreater';
-import storageService from '../lib/localStorageHelpers';
+import styles  from '@/styles/auth.module.css';
+import { AuthContext } from '@/Context/AuthContext';
+import * as AuthActionCreators from '@/Context/AuthActionCreater';
+import storageService from '@/lib/localStorageHelpers';
 const AuthForm = () => {
     const {authState, authDispatch} = useContext(AuthContext);
     const [isModalOpen, setIsModalOpen] = useState(authState.isFormOpen);

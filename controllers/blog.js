@@ -1,7 +1,7 @@
-import {newBlogvalidator} from '../utils/dataValidators';
-import {requireAPIKey, requireLogin} from '../utils/requestValidators';
-const Blog = require('../models/blog');
-const User = require('../models/user');
+import {newBlogvalidator} from '@/utils/dataValidators';
+import {requireAPIKey, requireLogin} from '@/utils/requestValidators';
+const Blog = require('@/models/blog');
+const User = require('@/models/user');
 export const getAllBlogs = async (req,res) =>{
     if(! await requireAPIKey(req, res)){
         return res.status(401).json({error: "Access denied"})

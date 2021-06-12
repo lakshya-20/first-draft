@@ -1,17 +1,16 @@
 import {useEffect, useContext, useState} from 'react'
-import Layout from "../../components/layout"
-import { useRouter } from 'next/router';
-import {Link} from 'next/link';
-import Head from "next/head";
-import Image from 'next/image'
 import { Button, Form, FormGroup, Label, Input, FormText,
     Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import { useRouter } from 'next/router';
+import Head from "next/head";
+import Image from 'next/image'
 import Yamde from "yamde";
-import {getBlogData} from '../../lib/blog';
-import styles from '../../styles/form.module.css';
-import storageService from "../../lib/localStorageHelpers";
-import { AuthContext } from '../../Context/AuthContext';
-import * as AuthActionCreators from '../../Context/AuthActionCreater';
+import Layout from "@/components/Layout";
+import {getBlogData} from '@/lib/blog';
+import styles from '@/styles/form.module.css';
+import storageService from "@/lib/localStorageHelpers";
+import { AuthContext } from '@/Context/AuthContext';
+import * as AuthActionCreators from '@/Context/AuthActionCreater';
 const NewBlog = ({blog}) => {
     const {authState, authDispatch} = useContext(AuthContext);
     const [title, setTitle] = useState(blog?blog.title:"");
